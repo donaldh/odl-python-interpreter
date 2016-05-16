@@ -14,7 +14,14 @@ dataBroker     # A DOMDataBroker
 log            # A slf4j Logger
 ```
 
-### Usage
+The odl-python-interpreter plugin uses the following directories:
+```
+<karaf-home>/python-scripts   - The interpreter monitors this directory for scripts that it loads and executes dynamically
+<karaf-home>/python-examples  - This directory contains example scripts that can be copied to python-scripts
+<karaf-home>/python-lib       - This director contains library modules that can be imported by your scripts
+```
+
+### Examples
 
 This example shows the DOMDataBroker being used to create a new network topology.
 ```
