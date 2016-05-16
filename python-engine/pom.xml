@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.opendaylight.controller</groupId>
+    <artifactId>config-parent</artifactId>
+    <version>0.4.1-Beryllium-SR1</version>
+    <relativePath />
+  </parent>
+  <groupId>org.opendaylight.python</groupId>
+  <artifactId>python-engine</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+
+  <properties>
+    <checkstyle.skip>true</checkstyle.skip>
+    <java.version.source>1.8</java.version.source>
+    <java.version.target>1.8</java.version.target>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>org.opendaylight.controller.config.yang.config.sca_transformer.impl</Export-Package>
+            <Import-Package>
+                com.google.*;version="[14.0,20.0)",
+                org.opendaylight.yangtools.yang.common,
+                org.opendaylight.yangtools.yang.data.api,
+                org.opendaylight.yangtools.yang.data.api.schema,
+                org.opendaylight.yangtools.yang.data.impl.schema,
+                org.opendaylight.controller.md.sal.dom.api,
+                org.opendaylight.controller.md.sal.common.api.data,
+                *;resolution:=optional</Import-Package>
+            <Embed-Dependency>jython-osgi</Embed-Dependency>
+          </instructions>
+          <_noee />
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.python</groupId>
+      <artifactId>jython-osgi</artifactId>
+      <version>2.7.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+</project>

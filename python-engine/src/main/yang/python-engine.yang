@@ -1,0 +1,70 @@
+module python-engine-impl {
+
+    yang-version 1;
+    namespace "urn:opendaylight:params:xml:ns:yang:controller:config:python-engine:impl";
+    prefix "python-engine-impl";
+
+    import config { prefix config; revision-date 2013-04-05; }
+    import opendaylight-md-sal-binding { prefix mdsal; revision-date 2013-10-28; }
+    import opendaylight-md-sal-dom { prefix dom; revision-date 2013-10-28; }
+    
+    description
+        "This module contains the base YANG definitions for
+        python-engine implementation.";
+
+    revision "2016-05-16" {
+        description
+            "Initial revision.";
+    }
+
+    // This is the definition of the service implementation as a module identity.
+    identity python-engine-impl {
+            base config:module-type;
+
+            // Specifies the prefix for generated java classes.
+            config:java-name-prefix PythonEngine;
+    }
+
+    // Augments the 'configuration' choice node under modules/module.
+    // We consume the three main services, RPCs, DataStore, and Notifications
+    augment "/config:modules/config:module/config:configuration" {
+        case python-engine-impl {
+            when "/config:modules/config:module/config:type = 'python-engine-impl'";
+
+            container binding-aware-broker {
+                uses config:service-ref {
+                    refine type {
+                        mandatory true;
+                        config:required-identity mdsal:binding-broker-osgi-registry;
+                    }
+                }
+            }
+
+            container data-broker {
+                uses config:service-ref {
+                    refine type {
+                        mandatory false;
+                        config:required-identity mdsal:binding-async-data-broker;
+                    }
+                }
+            }
+            container schema-service {
+                uses config:service-ref {
+                    refine type {
+                        mandatory true;
+                        config:required-identity dom:schema-service;
+                    }
+                }
+            }
+            
+            container dom-data-broker {
+                uses config:service-ref {
+                    refine type {
+                        mandatory true;
+                        config:required-identity dom:dom-async-data-broker;
+                    }
+                }
+            }
+       }
+    }
+}

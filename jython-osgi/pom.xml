@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.python</groupId>
+  <artifactId>jython-osgi</artifactId>
+  <version>2.7.0</version>
+  <packaging>bundle</packaging>
+  <name>Jython OSGi Bundle</name>
+  <description>This OSGi bundle simply wraps jython-2.7.0.jar artifact.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.python</groupId>
+      <artifactId>jython</artifactId>
+      <version>2.7.0</version>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.python</groupId>
+                  <artifactId>jython</artifactId>
+                  <version>2.7.0</version>
+                  <outputDirectory>
+                    ${project.build.directory}/classes
+                  </outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- Remove classes from the root package and re jar -->
+            <id>fix-default-package</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <delete>
+                  <fileset dir="${project.build.directory}/classes"
+                    includes="*.class" />
+                </delete>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>3.0.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-Name>jython-osgi</Bundle-Name>
+            <Bundle-SymbolicName>org.python.jython-osgi</Bundle-SymbolicName>
+            <Export-Package>org.python.core,org.python.util</Export-Package>
+            <_versionpolicy>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy>
+            <_removeheaders>Import-Package,Ignore-Package,Include-Resource,Private-Package,Embed-Dependency</_removeheaders>
+          </instructions>
+          <unpackBundle>false</unpackBundle>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
