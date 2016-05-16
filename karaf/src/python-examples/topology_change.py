@@ -5,7 +5,7 @@ class TopologyChangeListener(DOMDataChangeListener):
         for id in change.getCreatedData().keySet():
             log.warn("{} added to topology-netconf", id.getLastPathArgument())
         for id in change.getRemovedPaths():
-            log.warn("{} removed from topology-neconf", id.getLastPathArgument())
+            log.warn("{} removed from topology-netconf", id.getLastPathArgument())
 
 ns = 'urn:TBD:params:xml:ns:yang:network-topology'
 rev = '2013-10-21'
