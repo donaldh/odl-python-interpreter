@@ -14,7 +14,7 @@ dataBroker     # A DOMDataBroker
 log            # A slf4j Logger
 ```
 
-### Usage
+### Usage
 
 This example shows the DOMDataBroker being used to create a new network topology.
 ```
